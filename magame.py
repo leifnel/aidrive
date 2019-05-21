@@ -5,6 +5,7 @@ from entities.car import Car
 from entities.track import Track
 from pyglet.window import key, FPSDisplay
 from random import randint, choice
+from system.tools import MapTools
 
 car = Car(x=500, y=90, speed=0, maxspeed=4, heading=270)
 track = Track()
@@ -13,11 +14,13 @@ class Window(pyglet.window.Window):
     def __init_(self,*args,**kwargs):
         super().__init__(*args,**kwargs)
         self.set_minimum_size(300,200)
+        track.draw_outline()
 
 
 def draw():
     window.clear()
-    track.draw_self()
+    #track.draw_self()
+    
     car.draw_self()
     
 

@@ -1,3 +1,5 @@
 {
-    "python.pythonPath": "C:\\Users\\George\\.conda\\envs\\tensor\\python.exe"
+    "python.pythonPath": "C:\\Users\\George\\.conda\\envs\\tensor\\python.exe",
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true
 }

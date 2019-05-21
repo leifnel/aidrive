@@ -96,6 +96,7 @@ class Car(Component):
         self.draw_line(self.x,self.y,self.orientation+90,50)
         self.draw_line(self.x,self.y,self.orientation+180,50)
         self.car_sprite.draw()
+        
 
     def accelerate(self,value):
         self.acceleration=value
