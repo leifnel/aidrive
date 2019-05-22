@@ -37,13 +37,13 @@ class Car(Component):
 
         self.sensors = []
         self.sensors.append(sensor(offset =0,size = 100))
-        #self.sensors.append(sensor(offset = -25,size = 100))
-        #self.sensors.append(sensor(offset = 25,size = 100))
-        #self.sensors.append(sensor(offset = -45,size = 100))
-        #self.sensors.append(sensor(offset = 45,size = 100))
-        #self.sensors.append(sensor(offset = -90,size = 100))
-        #self.sensors.append(sensor(offset = 90,size = 100))
-        #self.sensors.append(sensor(offset = 180,size = 100))
+        self.sensors.append(sensor(offset = -25,size = 100))
+        self.sensors.append(sensor(offset = 25,size = 100))
+        self.sensors.append(sensor(offset = -45,size = 100))
+        self.sensors.append(sensor(offset = 45,size = 100))
+        self.sensors.append(sensor(offset = -90,size = 100))
+        self.sensors.append(sensor(offset = 90,size = 100))
+        self.sensors.append(sensor(offset = 180,size = 100))
 
         self.updateSensors()
 
@@ -82,12 +82,28 @@ class Car(Component):
 
         self.car_sprite.update(rotation=self.orientation)
         
-        if self.x < 0 or (self.x + self.width) > config.window_width:
-            self.x_direction *= -1
+        if 0:
+            if self.x < 0 or (self.x + self.width) > config.window_width:
+                self.x_direction *= -1
 
-        if self.y < 0 or (self.y + self.height) > config.window_height:
-            self.y_direction *= -1
+            if self.y < 0 or (self.y + self.height) > config.window_height:
+                self.y_direction *= -1
+        else:
+            if self.y < 0:
+                self.y = 0
+                self.speed = 0
 
+            if self.y > config.window_height:
+                self.y = config.window_height
+                self.speed = 0
+
+            if self.x < 0:
+                self.x = 0 
+                self.speed = 0
+
+            if self.x > config.window_width:
+                self.x = config.window_width
+                self.speed=0
 
         if(self.speed > 0):
             self.x += (self.speed * self.x_direction)
