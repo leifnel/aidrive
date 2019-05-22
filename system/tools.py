@@ -1,8 +1,6 @@
-from __future__ import print_function
 import math
 import numpy as np
 from shapely.geometry import LineString,Point
-import matplotlib.pyplot as plt
 
 
 class MapTools():
@@ -114,9 +112,10 @@ class LineTools():
 
     def distance(self,point1,point2):
         p1 = Point(point1[1],point1[0])
-        p2 = Point(point2[1],point2[0])
+        p2 = Point(point2[0],point2[1])
         distance = p1.distance(p2)
         return distance
+#FIX THIS: coordintates of line and intercept is not in same order!
 
     def getIntesections(self):
 
@@ -124,22 +123,21 @@ class LineTools():
         
         for sensor in self.sensors:
             #sensor.toString()
+            leastdistance=1001
             for line in self.linesSample:
                 intersection_point = self.line_intersection([sensor.p1,sensor.p2],line)
                 if(intersection_point):
-                    sensor.hit(self.distance(sensor.p1,intersection_point))
-                    intersections.append(intersection_point)
-                    # if sensor 0 print point and intersection
-                    if(sensor.offset==0):
-                        print(sensor.p1,intersection_point,self.distance(sensor.p1,intersection_point))
-                else:
-                    sensor.reset()
-        return intersections
-
-
-
-
+                    distance=self.distance(sensor.p1,intersection_point)
+#                    if sensor.offset==180:
+#                       print ("p1:",sensor.p1," p2:",sensor.p2," int:",intersection_point," dist:",distance)
+                    if distance<leastdistance:
+                        nearestIntersection=intersection_point
+                        leastdistance=distance
  
+            if leastdistance<1000:
+                sensor.hit(leastdistance)
+                intersections.append(nearestIntersection)
+            else:
+                sensor.reset()
 
-	
-	
+        return intersections

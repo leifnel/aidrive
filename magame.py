@@ -34,8 +34,8 @@ def draw():
         text = '{}:{}'.format(s.offset,s.distance)
         label = pyglet.text.Label(text,
                           font_name='Times New Roman',
-                          font_size=18,
-                          x=20, y=0+(50*count),
+                          font_size=10,
+                          x=30, y=window.height-10-(15*count),
                           anchor_x='left', anchor_y='center')
     #print(len(intersections))
         label.draw()        
@@ -50,7 +50,7 @@ def draw():
             ipoint[1],ipoint[0]-1)),
             ('c3B', (0, 255, 0,0, 255, 0,0, 255, 0,0, 255, 0,0, 255, 0))
         )
-    print(car.x,car.y)
+    # print(car.x,car.y)
     car.draw_self()
     
 
