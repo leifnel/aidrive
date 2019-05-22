@@ -1,23 +1,21 @@
-import pyglet
-import config
-import math
-import numpy as np
-from PIL import Image, ImageFilter
 from system.tools import MapTools
+import numpy as np
+import pyglet
+from PIL import Image, ImageFilter
 
-class Track():
-    def __init__(self, *args, **kwargs):
+class map_gen():
+
+    def load_track(self):
+        self.scale = 1.3
         self.border_image = pyglet.image.load('assets\\images\\track1\\background.png')
         self.tarmac_image = pyglet.image.load('assets\\images\\track1\\tarmac.png')
         self.border_sprite = pyglet.sprite.Sprite(self.border_image, 0, 0)
         self.tarmac_sprite = pyglet.sprite.Sprite(self.tarmac_image, 0, 0)
-        self.border_sprite.update(scale=1.3)
-        self.tarmac_sprite.update(scale=1.3)
+        self.border_sprite.update(scale=self.scale)
+        self.tarmac_sprite.update(scale=self.scale)
         self.coords_map = []
-        self.lines = np.load('track1.npy')
-        #self.getShape()
+        self.lines = []
 
-    def getShape(self):
         img = Image.open('assets\\images\\track1\\trackmask.jpg')
         
         img = img.resize((self.tarmac_sprite.width, self.tarmac_sprite.height))
@@ -57,75 +55,22 @@ class Track():
         t = MapTools()
         t.loadTrackArray(self.coords_map)
         t.outlineTrack()
-
         self.lines = t.lines
-        
         self.lines = t.thinLines(self.lines)
         self.lines = t.thinLines(self.lines)
-        self.lines = t.thinLines(self.lines)
+        self.lines[205] = [[986,57],[1014,57]]
+        self.lines.append([[998,124],[970,124]])
+        #self.lines = t.thinLines(self.lines)
 
+
+        #for i,line in enumerate(self.lines):
+        #    print(i,line,t.dist(line[0],line[1]))
         
-        print(len(self.lines))
-        
+        np.save('track1.npy',self.lines)
 
-        #print(self.coords_map)
-                #print(coords_map)
+        #print(self.lines)
 
-               
-                # for k,val in enumerate(pixel):
-                #     if(val<127):
-                #         arr[i][j][k]=0
-                #     else:
-                #         arr[i][j][k]=255
-    def draw_outline(self):
-        #draw coordsmap\
-        #print(len(self.coords_map))
-        
-        for line in self.lines:
-            pyglet.graphics.draw(2,pyglet.gl.GL_LINES,
-                ('v2i', (line[0][0],line[0][1],line[1][0],line[1][1])),
-                ('c3B', (255, 0, 0,255, 0, 0))
-            )
-
-        #     pyglet.graphics.draw(1,pyglet.gl.GL_POINTS,
-        #         ('v2i', (line[0][0],line[0][1])),
-        #         ('c3B', (255, 0, 0))
-        #     )
-
-        #     pyglet.graphics.draw(1,pyglet.gl.GL_POINTS,
-        #         ('v2i', (line[1][0],line[1][1])),
-        #         ('c3B', (255, 0, 0))
-        #     )
-        
-        #print(*arr[250], sep = "\n") 
-
-
-
-
-        # for point in self.coords_map:
-        #     pyglet.graphics.draw(1,pyglet.gl.GL_POINTS,
-        #         ('v2i', (point[0],point[1])),
-        #         ('c3B', (255, 0, 0))
-        #     )
-
-        #Image.fromarray(arr).show()
-
-        # for i in arr:
-        #     for j in i:
-        #         for k in j:
-        #             if (arr[i][j][k]<127):
-        #                 arr[i][j][k] = 0
-        #             else:
-        #                 arr[i][j][k] = 255
-
-        # 
-        
-
-    def draw_self(self):
-        
-        pass
-        self.border_sprite.draw()
-        self.tarmac_sprite.draw()
-        # pyglet.graphics.draw(2, pyglet.gl.GL_LINES,
-        # ('v2i', ([100, 150, 100,300 ]))
-        # )
+if __name__ == '__main__' :
+    m = map_gen()
+    m.load_track()
+    

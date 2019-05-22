@@ -1,6 +1,6 @@
 import unittest
-from system.tools import MapTools
-
+from system.tools import MapTools,LineTools
+from entities.car import sensor
 class TestTools(unittest.TestCase):
     def test_loadArray(self):
         trackArray = [
@@ -57,7 +57,29 @@ class TestTools(unittest.TestCase):
         t.loadTrackArray(trackArray)
         t.outlineTrack()
 
-        print(t.lines)
+        #print(t.lines)
+
+    def test_sensors(self):
+        sensors = []
+
+        s = sensor(size=10,offset=0)
+        s.p1 = [0,0]
+        s.recalculatePoints()
+        sensors.append(s)
+        
+        s = sensor(size=10,offset=90)
+        s.p1 = [0,0]
+        s.recalculatePoints()
+        sensors.append(s)
+        
+
+        #sensors = [[[0,0],[10,0]],[[0,0],[0,10]]]
+        lines = [[[8,-5],[2,5]]]
+        
+        t = LineTools(sensors=sensors,lines=lines)
+        t.calculatePOIBox()
+        t.getLinesInBox()
+        print(t.getIntesections())
 
 
 if __name__=='__main__':

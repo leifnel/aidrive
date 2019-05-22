@@ -15,6 +15,7 @@ class Car(Component):
         self.maxspeed = kwargs.get('maxspeed',5)
         self.minspeed = kwargs.get('minspeed',-1)
         self.orientation = kwargs.get('heading',0)
+        self.draw_sensors = kwargs.get('sensors',True)
         self.steering=0
         self.throttle=0
         self.acceleration=0
@@ -33,6 +34,22 @@ class Car(Component):
         
         self.x_direction = 0
         self.y_direction = 1
+
+        self.sensors = []
+        self.sensors.append(sensor(offset =0,size = 100))
+        #self.sensors.append(sensor(offset = -25,size = 100))
+        #self.sensors.append(sensor(offset = 25,size = 100))
+        #self.sensors.append(sensor(offset = -45,size = 100))
+        #self.sensors.append(sensor(offset = 45,size = 100))
+        #self.sensors.append(sensor(offset = -90,size = 100))
+        #self.sensors.append(sensor(offset = 90,size = 100))
+        #self.sensors.append(sensor(offset = 180,size = 100))
+
+        self.updateSensors()
+
+        #for sen in self.sensors:
+        #    sen.toString()
+
 
         print('Car Created')
 
@@ -79,6 +96,7 @@ class Car(Component):
             self.x -= (self.speed * self.x_direction)
             self.y -= (self.speed * self.y_direction)
         self.car_sprite.set_position(self.x, self.y)
+        self.updateSensors()
 
         
     def draw_self(self):
@@ -87,15 +105,12 @@ class Car(Component):
         :return:
         """
 
-        self.draw_line(self.x,self.y,self.orientation,200)
-        self.draw_line(self.x,self.y,self.orientation-25,100)
-        self.draw_line(self.x,self.y,self.orientation+25,100)
-        self.draw_line(self.x,self.y,self.orientation-45,75)
-        self.draw_line(self.x,self.y,self.orientation+45,75)
-        self.draw_line(self.x,self.y,self.orientation-90,50)
-        self.draw_line(self.x,self.y,self.orientation+90,50)
-        self.draw_line(self.x,self.y,self.orientation+180,50)
+        if (self.draw_sensors):
+            for sensor in self.sensors:
+                self.draw_line(self.x,self.y,self.orientation+sensor.offset,sensor.size)
+        
         self.car_sprite.draw()
+        
         
 
     def accelerate(self,value):
@@ -109,3 +124,32 @@ class Car(Component):
         pyglet.graphics.draw(2, pyglet.gl.GL_LINES,
             ('v2f', (x, y, x+size*math.sin(angle), y+size*math.cos(angle)))
         )
+
+    def updateSensors(self):
+        #print('Sensor count:',len(self.sensors))
+        for sensor in self.sensors:
+            sensor.p1 = [self.x , self.y]
+            sensor.recalculatePoints(self.orientation)
+
+class sensor():
+    def __init__(self, *args, **kwargs):
+        self.offset = kwargs.get('offset', 0)
+        self.size = kwargs.get('size',100)
+        self.distance = 1000
+        self.p1 = []
+        self.p2 = []
+    
+    def recalculatePoints(self,heading=0):
+        angle = math.radians(heading+self.offset)
+        x = self.p1[0]
+        y = self.p1[1]
+        self.p2 = [x+self.size*math.sin(angle), y+self.size*math.cos(angle)]
+
+    def toString(self):
+        print(self.p1,self.p2,self.size,self.offset)
+    
+    def reset(self):
+        self.distance=1000
+
+    def hit(self, distance):
+        self.distance = distance
