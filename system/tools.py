@@ -70,7 +70,7 @@ class LineTools():
         self.lines = kwargs.get('lines', None)
         self.poi_x = 0
         self.poi_y = 0
-        self.poi_r = 100
+        self.poi_r = kwargs.get('radius', 70)
         self.poi_x_max = 0
         self.poi_x_min = 0
         self.poi_y_max = 0
@@ -114,6 +114,7 @@ class LineTools():
         p1 = Point(point1[1],point1[0])
         p2 = Point(point2[0],point2[1])
         distance = p1.distance(p2)
+        
         return distance
 #FIX THIS: coordintates of line and intercept is not in same order!
 
@@ -135,7 +136,7 @@ class LineTools():
                         leastdistance=distance
  
             if leastdistance<1000:
-                sensor.hit(leastdistance)
+                sensor.hit(round(leastdistance,2))
                 intersections.append(nearestIntersection)
             else:
                 sensor.reset()
