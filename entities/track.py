@@ -4,6 +4,7 @@ import math
 import numpy as np
 from PIL import Image, ImageFilter
 from system.tools import MapTools
+from shapely.geometry import LinearRing,Point
 
 class Track():
     def __init__(self, *args, **kwargs):
@@ -16,6 +17,20 @@ class Track():
         self.coords_map = []
         self.lines = np.load('track1.npy')
         #self.getShape()
+        self.linerings_found = False
+        self.linerings = []
+
+    def isInside(self, px, py):
+        pass
+        self.hits=0
+        self.n=0
+        for ring in self.linerings:
+            self.n+=1
+            print(ring)
+            if ring.contains(Point(px,py)):
+                print("Inside ring ",self.n)
+                self.hits+=1
+        print(self.hits)
 
     def getShape(self):
         img = Image.open('assets\\images\\track1\\trackmask.jpg')
@@ -80,7 +95,6 @@ class Track():
     def draw_outline(self):
         #draw coordsmap\
         #print(len(self.coords_map))
-        
         for line in self.lines:
             pyglet.graphics.draw(2,pyglet.gl.GL_LINES,
                 ('v2i', (line[0][0],line[0][1],line[1][0],line[1][1])),
@@ -129,3 +143,33 @@ class Track():
         # pyglet.graphics.draw(2, pyglet.gl.GL_LINES,
         # ('v2i', ([100, 150, 100,300 ]))
         # )
+
+    def find_linerings(self):
+        if self.linerings_found:
+            return
+        # t = MapTools()
+        firstpoint=self.lines[0][0]
+        points=[]
+        previousEnd =firstpoint[1]
+        print("First point:",firstpoint)
+        self.linerings_found = True
+        for line in self.lines:
+            # print (line[0],line[1],line[0]==previousEnd,end='')
+            if points==[] or (line[0]==previousEnd).all():
+                points.append(line[1])
+            else: 
+                ring=LinearRing(points)
+                print("Ring length:",len(ring.coords))
+                #pyglet.graphics.draw(len(ring.coords), pyglet.gl.GL_LINE_LOOP,ring)
+                self.linerings.append(ring)
+                print(ring)
+                points=[]
+
+            previousEnd=line[1]
+        if points!=[]:
+            ring=LinearRing(points)
+            self.linerings.append(ring)
+
+
+
+

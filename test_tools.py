@@ -1,7 +1,21 @@
 import unittest
 from system.tools import MapTools,LineTools
 from entities.car import sensor
+from shapely.geometry import LineString,Point,LinearRing
 class TestTools(unittest.TestCase):
+    def test_isInside(self):
+        points = [
+            [0,0],
+            [2,0],
+            [2,2],
+            [0,2]
+        ]
+        ring=LinearRing(points)
+        print(ring)
+        print(Point(1,2))
+        self.assertEqual(ring.contains(Point(3,3)),False)
+        self.assertEqual(ring.contains(Point(1,1)),True)
+
     def test_loadArray(self):
         trackArray = [
             [1,0],

@@ -1,6 +1,6 @@
 import math
 import numpy as np
-from shapely.geometry import LineString,Point
+from shapely.geometry import LineString,Point,LinearRing
 
 
 class MapTools():
@@ -25,7 +25,7 @@ class MapTools():
         
         min_dist = 100000000000
         
-        for i,p in enumerate(self.unusedPoints):
+        for i,p in enumerate(self.unusedPoints):#pylint: disable=unused-variable
             #distance = math.sqrt((p[0]-point[0])**2)+((p[1]-point[1])**2)
             distance = self.dist(p,point)
             if(min_dist>distance):
@@ -98,7 +98,7 @@ class LineTools():
                 linesInside.append(line)
         self.linesSample = linesInside
         return linesInside
-
+     
     def line_intersection(self, line1, line2):
         l1 = LineString([(line1[0][1],line1[0][0]), (line1[1][1],line1[1][0])])
         l2 = LineString([(line2[0][1],line2[0][0]), (line2[1][1],line2[1][0])])
@@ -116,7 +116,6 @@ class LineTools():
         distance = p1.distance(p2)
         return distance
 #FIX THIS: coordintates of line and intercept is not in same order!
-
     def getIntesections(self):
 
         intersections = []
@@ -141,3 +140,4 @@ class LineTools():
                 sensor.reset()
 
         return intersections
+

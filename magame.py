@@ -19,7 +19,8 @@ class Window(pyglet.window.Window):
 def draw():
     window.clear()
     #track.draw_self()
-    #track.draw_outline()
+    track.draw_outline()
+    track.find_linerings()
     dlines = detectedlines.getLinesInBox()
     for line in dlines:
         pyglet.graphics.draw(2,pyglet.gl.GL_LINES,
@@ -51,6 +52,7 @@ def draw():
             ('c3B', (0, 255, 0,0, 255, 0,0, 255, 0,0, 255, 0,0, 255, 0))
         )
     # print(car.x,car.y)
+    track.isInside(car.x, car.y)
     car.draw_self()
     
 
