@@ -6,15 +6,28 @@ class TestTools(unittest.TestCase):
     def test_isInside(self):
         points = [
             [0,0],
-            [2,0],
-            [2,2],
-            [0,2]
+            [4,0],
+            [4,4],
+            [0,4]
         ]
         ring=Polygon(LinearRing(points))
+        points2 = [
+            [1,1],
+            [1,3],
+            [3,3],
+            [3,1]
+        ]
+        ring2=Polygon(LinearRing(points2))
+        line=LineString([(-1,1),(3,3)])
         print(ring)
-        print(Point(1,2))
-        self.assertEqual(ring.contains(Point(3,3)),False)
-        self.assertEqual(ring.contains(Point(1,1)),True)
+        print(ring2)
+        print("road")
+        road=ring.difference(ring2)
+        print(road)
+
+        self.assertEqual(road.contains(Point(2,2)),False)
+        self.assertEqual(road.contains(Point(0.5,0.5)),True)
+
 
     def test_loadArray(self):
         trackArray = [
