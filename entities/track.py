@@ -4,7 +4,7 @@ import math
 import numpy as np
 from PIL import Image, ImageFilter
 from system.tools import MapTools
-from shapely.geometry import LinearRing,Point
+from shapely.geometry import LinearRing,Point,Polygon
 
 class Track():
     def __init__(self, *args, **kwargs):
@@ -26,11 +26,10 @@ class Track():
         self.n=0
         for ring in self.linerings:
             self.n+=1
-            print(ring)
             if ring.contains(Point(px,py)):
-                print("Inside ring ",self.n)
+        #        print("Inside ring ",self.n)
                 self.hits+=1
-        print(self.hits)
+        return self.hits
 
     def getShape(self):
         img = Image.open('assets\\images\\track1\\trackmask.jpg')
@@ -158,8 +157,8 @@ class Track():
             if points==[] or (line[0]==previousEnd).all():
                 points.append(line[1])
             else: 
-                ring=LinearRing(points)
-                print("Ring length:",len(ring.coords))
+                ring=Polygon(LinearRing(points))
+#                print("Ring length:",len(ring.coords))
                 #pyglet.graphics.draw(len(ring.coords), pyglet.gl.GL_LINE_LOOP,ring)
                 self.linerings.append(ring)
                 print(ring)

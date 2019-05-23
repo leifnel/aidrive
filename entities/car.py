@@ -114,7 +114,12 @@ class Car(Component):
         self.car_sprite.set_position(self.x, self.y)
         self.updateSensors()
 
-        
+    def stop(self):
+        print("Speed:",self.speed)
+        if self.speed>1:
+            self.speed=1
+        self.speed*=0.95
+
     def draw_self(self):
         """
         Draws our car sprite to screen

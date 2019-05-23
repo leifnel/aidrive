@@ -52,7 +52,9 @@ def draw():
             ('c3B', (0, 255, 0,0, 255, 0,0, 255, 0,0, 255, 0,0, 255, 0))
         )
     # print(car.x,car.y)
-    track.isInside(car.x, car.y)
+    if track.isInside(car.x, car.y)!=1:
+        car.stop()
+        
     car.draw_self()
     
 
